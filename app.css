@@ -1,0 +1,62 @@
+/* Your styles should be mobile-first and responsive */
+
+/** 
+  * If you are unclear on how to utilize a mobile-first, responsive technique to write your CSS, here is an example: 
+  *
+  * https://github.com/andreacardybailey/responsive_example/blob/master/styles/responsive-base.css 
+  *
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Metal+Mania');
+
+h1 {
+  color: blue;
+  text-align: center;
+  background-color: black;
+  padding: 30px;
+  font-family: 'Metal Mania';
+  font-size: 45px;
+}
+
+p {
+  text-align: center;
+  font-family: 'Metal Mania'
+}
+h2 {
+  text-align: center;
+  font-family: 'Metal Mania'
+}
+
+.startQuiz{
+  text-align: center
+}
+
+.mainPage{
+  margin: 50px;
+  border: 1px solid green;
+  padding: 20px
+}
+
+.mainPage h2 {
+  color: rgb(201, 21, 21);
+  font-size: 30px
+}
+
+.mainPage p {
+  color: rgb(192, 18, 18);
+
+}
+
+.score{
+  text-align: right;
+}
+
+.finalPage {
+  margin: 50px;
+  border: 1px solid darkred;
+  padding: 20px
+}
+
+.finalPage h2 {
+  font-size: 30px
+}
