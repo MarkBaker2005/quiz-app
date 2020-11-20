@@ -5,8 +5,7 @@
 
 const store = {
 
-  questions: [
-    {
+  questions: [{
       question: "Who is the lead singer of the band Led Zeppelin?",
       answers: [
         "Jimmy Page",
@@ -77,9 +76,9 @@ const store = {
       correctAnswer: 1
     }
   ],
-  questionNumber : 0,
-  score : 0,
-  quizStarted : false
+  questionNumber: 0,
+  score: 0,
+  quizStarted: false,
 };
 
 /**
@@ -106,13 +105,29 @@ function generateMainPage() {
   </div>`)
 }
 
+function generateWrongPage() {
+  return `<div id="wrongPage">
+  <h1>Bummer!</h1>
+  <p>The right answer was 
+  ${store.questions[store.questionNumber - 1].answers[store.questions[store.questionNumber - 1].correctAnswer]}</p>
+  <button class="rockOn">Rock On</button>
+  </div>`
+}
+
+function generateRightPage() {
+  return `<div id="continue">
+  <h1>NICE!</h1>
+  <button class="rockOn">ROCK ON</button>
+  </div>`;
+}
+
 function generateQuestion() {
   let question = store.questions[store.questionNumber];
   console.log(question);
   let answers = question.answers.map((answer, idx) => {
     console.log(answer, idx);
     return `<label for="answer${idx}">
-    <input type="radio" id="answer${idx}" name="answer" required>
+    <input type="radio" id="answer${idx}" name="answer" value = "${idx}" required>
     ${answer}</label><br>`;
   });
   console.log(answers);
@@ -138,16 +153,31 @@ function generateFinalPage() {
   `
 }
 
-function generateFeedback(answer, correct) {
-  
-}
+
 // These functions return HTML templates
 
 /********** RENDER FUNCTION(S) **********/
-function render() {
+function render(pagetype) {
   let html = '';
-  store.questionNumber === 7 ? html = generateFinalPage() :
-  store.quizStarted === true ? html = generateQuestion() : html = generateMainPage();
+
+  switch (pagetype) {
+    case "mainPage" :
+      html = generateMainPage();
+      break;
+    case "endPage":
+        html = generateFinalPage();
+        break;
+    case "wrongPage":
+      html = generateWrongPage();
+      break;
+    case "rightPage":
+      html = generateRightPage();
+      break;
+    default:
+      html = generateQuestion();
+
+  }
+  
   $('main').html(html);
 }
 // This function conditionally replaces the contents of the <main> tag based on the state of the store
@@ -164,21 +194,43 @@ function handleAnswerSubmit() {
   $('main').on('submit', '#question', function (event) {
     event.preventDefault();
     let chosenAnswer = $("input[name='answer']:checked").val();
-    console.log(chosenAnswer);
-    if(chosenAnswer === "on") {
-      store.score += 20
-    }
     store.questionNumber++;
-    render();
-
+    if (Number(chosenAnswer) === store.questions[store.questionNumber - 1].correctAnswer) {
+      store.score += 20;
+      render("rightPage");
+    } else {
+      render("wrongPage");
+    }
   })
 }
 
+function handleRightPage() {
+  $('main').on('click', '.rockOn', function (event) {
+    if (store.questionNumber >= store.questions.length - 1) {
+      render("endPage")
+    } else {
+      render()
+    }
+  })
+}
+
+function handleWrongPage() {
+  $('main').on('click', '.rockOn', function (event) {
+    event.preventDefault();
+    if (store.questionNumber >= store.questions.length - 1) {
+      render("endPage")
+    } else {
+      render()
+    }
+  })
+}
+
+
 function handleFinalAnswer() {
   $('main').on('click', '#startOver', function (event) {
-    event.preventDefault();
-    generateMainPage();
-;
+    store.questionNumber = 0;
+    store.score = 0;
+    generateMainPage();;
   })
 }
 // These functions handle events (submit, click, etc)
@@ -186,12 +238,16 @@ function handleFinalAnswer() {
 
 
 function main() {
-  render(); 
-  generateMainPage();
-  generateQuestion(); 
+  render();
   handleStartQuiz();
+  generateMainPage();
+  generateQuestion();
+  handleWrongPage();
+  handleRightPage();
+  generateFinalPage();
   handleAnswerSubmit();
   handleFinalAnswer();
+  generateFeedback();
 }
 
 $(main);
