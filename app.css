@@ -9,6 +9,8 @@
 
 @import url('https://fonts.googleapis.com/css?family=Metal+Mania');
 
+
+
 h1 {
   color: blue;
   text-align: center;
@@ -17,7 +19,10 @@ h1 {
   font-family: 'Metal Mania';
   font-size: 45px;
 }
-
+body {
+  justify-content: space-around;
+  background-color: darkslategrey
+}
 p {
   text-align: center;
   font-family: 'Metal Mania'
@@ -47,6 +52,12 @@ h2 {
 
 }
 
+button,
+input[type="submit"] {
+  background-color: blue;
+  display: flex;
+  justify-content: center;
+}
 .score{
   text-align: right;
 }
@@ -59,4 +70,11 @@ h2 {
 
 .finalPage h2 {
   font-size: 30px
+}
+
+@media (min-width: 700px) {
+
+  p {
+    font-size: 20px
+  }
 }
